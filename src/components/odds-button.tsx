@@ -33,7 +33,7 @@ export function OddsButton({
       <span className="w-full truncate text-center text-[11px] leading-tight text-muted-foreground">
         {label}
       </span>
-      <span className="font-display text-sm font-700 tabular-nums">{formatOdds(odds)}</span>
+      <span className="font-display text-sm font-bold tabular-nums">{formatOdds(odds)}</span>
     </button>
   );
 }

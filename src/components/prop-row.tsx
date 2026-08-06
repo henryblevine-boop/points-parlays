@@ -21,7 +21,7 @@ export function PropRow({ prop, matchup }: { prop: PlayerProp; matchup: string }
   return (
     <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-3">
       <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-sm font-600">{prop.player_name}</p>
+        <p className="truncate font-display text-sm font-semibold">{prop.player_name}</p>
         <p className="truncate text-xs text-muted-foreground">
           {prop.team_abbr} · {market} {prop.line}
         </p>

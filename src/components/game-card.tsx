@@ -38,7 +38,7 @@ export function GameCard({ game }: { game: Game }) {
           params={{ gameId: game.id }}
           className="min-w-0 flex-1 hover:text-primary"
         >
-          <p className="truncate font-display text-sm font-600">
+          <p className="truncate font-display text-sm font-semibold">
             {game.away_team} <span className="text-muted-foreground">@</span> {game.home_team}
           </p>
           <p className="text-xs text-muted-foreground">

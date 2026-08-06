@@ -26,7 +26,7 @@ export function BetSlipCard({
     >
       <div
         className={cn(
-          "flex items-center justify-between gap-2 px-3 py-2 text-xs font-600",
+          "flex items-center justify-between gap-2 px-3 py-2 text-xs font-semibold",
           won && "bg-win/15 text-win",
           lost && "bg-loss/15 text-loss",
           !won && !lost && "bg-muted text-muted-foreground",
@@ -45,7 +45,7 @@ export function BetSlipCard({
         {bet.bet_legs.slice(0, compact ? 3 : undefined).map((leg) => (
           <li key={leg.id} className="flex items-center gap-2 px-3 py-2">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-600">{leg.selection}</p>
+              <p className="truncate text-sm font-semibold">{leg.selection}</p>
               <p className="truncate text-xs text-muted-foreground">
                 {leg.market} · {leg.matchup}
               </p>
