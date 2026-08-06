@@ -46,7 +46,7 @@ export const placeBet = createServerFn({ method: "POST" })
         .select("id", { count: "exact", head: true })
         .eq("user_id", userId)
         .eq("league_id", data.leagueId)
-        .eq("week_start", weekRow as unknown as string);
+        .eq("week_start", weekStart);
       if (cErr) throw new Error(cErr.message);
       if ((count ?? 0) >= league.weekly_bet_limit) {
         throw new Error("You have used all of your bets in this league for this week.");
