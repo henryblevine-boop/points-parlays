@@ -1,7 +1,14 @@
+import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatOdds } from "@/lib/odds";
 
+/**
+ * DraftKings-style odds cell: the line (e.g. "+3.5", "O 44.5") sits on top in
+ * white, with the price underneath in the accent green. Moneyline cells have no
+ * line, so the price is centered on its own.
+ */
 export function OddsButton({
+  line,
   label,
   odds,
   active,
@@ -9,6 +16,9 @@ export function OddsButton({
   onClick,
   className,
 }: {
+  /** Line / point text shown above the price. Omit for moneyline. */
+  line?: string | null;
+  /** Accessible description of the selection. */
   label: string;
   odds: number;
   active?: boolean;
@@ -21,19 +31,37 @@ export function OddsButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
+      aria-label={label}
+      aria-pressed={active}
       className={cn(
-        "flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-md border px-2 py-2 transition-colors",
+        "flex h-12 min-w-0 flex-col items-center justify-center rounded-md border transition-colors",
         active
-          ? "border-primary bg-primary/15 text-primary"
-          : "border-border bg-elevated text-foreground hover:border-primary/60",
-        disabled && "cursor-not-allowed opacity-40 hover:border-border",
+          ? "border-primary bg-primary/15"
+          : "border-transparent bg-elevated hover:border-primary/50",
+        disabled && "opacity-40",
         className,
       )}
     >
-      <span className="w-full truncate text-center text-[11px] leading-tight text-muted-foreground">
-        {label}
-      </span>
-      <span className="font-display text-sm font-bold tabular-nums">{formatOdds(odds)}</span>
+      {disabled ? (
+        <Lock className="size-3.5 text-muted-foreground" aria-hidden />
+      ) : (
+        <>
+          {line ? (
+            <span className="text-[13px] leading-tight font-semibold tabular-nums text-foreground">
+              {line}
+            </span>
+          ) : null}
+          <span
+            className={cn(
+              "tabular-nums leading-tight",
+              line ? "text-[11px] font-semibold" : "text-[15px] font-bold",
+              active ? "text-primary" : "text-primary",
+            )}
+          >
+            {formatOdds(odds)}
+          </span>
+        </>
+      )}
     </button>
   );
 }
