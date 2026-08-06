@@ -73,17 +73,17 @@ export type League = {
   created_at: string;
 };
 
-export const gamesQuery = () => ({
-  queryKey: ["games"],
+export const gamesQuery = (leagueLabel?: string) => ({
+  queryKey: ["games", leagueLabel ?? "all"],
   queryFn: async (): Promise<Game[]> => {
-    const { data, error } = await supabase
-      .from("games")
-      .select("*")
-      .order("start_time", { ascending: true });
+    let q = supabase.from("games").select("*").order("start_time", { ascending: true });
+    if (leagueLabel) q = q.eq("league_label", leagueLabel);
+    const { data, error } = await q;
     if (error) throw error;
     return (data ?? []) as Game[];
   },
 });
+
 
 export const gameQuery = (gameId: string) => ({
   queryKey: ["game", gameId],

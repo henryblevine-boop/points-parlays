@@ -106,7 +106,7 @@ function SearchPage() {
               <div className="min-w-0">
                 <p className="truncate font-display text-sm font-bold">{u.username}</p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {u.display_name ?? "ParlayPals member"}
+                  {u.bio ?? "ParlayPals member"}
                 </p>
               </div>
             </Link>
