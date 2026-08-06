@@ -55,15 +55,24 @@ function AuthPage() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     navigate({ to: "/home" });
   };
 
   const signUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!ageOk) return toast.error("You must confirm you are 18 or older.");
+    if (!ageOk) {
+      toast.error("You must confirm you are 18 or older.");
+      return;
+    }
     const parsed = signUpSchema.safeParse({ email, password, username });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]!.message);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]!.message);
+      return;
+    }
 
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
@@ -77,9 +86,10 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     if (!data.session) {
-      return toast.success("Check your email", {
+      toast.success("Check your email", {
         description: "Confirm your address to finish creating your account.",
       });
+      return;
     }
     navigate({ to: "/home" });
   };
@@ -88,7 +98,10 @@ function AuthPage() {
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
-    if (result.error) return toast.error("Google sign-in failed. Try again.");
+    if (result.error) {
+      toast.error("Google sign-in failed. Try again.");
+      return;
+    }
     if (result.redirected) return;
     navigate({ to: "/home" });
   };

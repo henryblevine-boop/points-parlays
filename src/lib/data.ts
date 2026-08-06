@@ -253,3 +253,65 @@ export const friendsQuery = (userId: string) => ({
     return (data ?? []).map((f) => f.friend_id);
   },
 });
+
+export type PropWithGame = PlayerProp & {
+  games: { home_abbr: string; away_abbr: string; start_time: string } | null;
+};
+
+export const trendingPropsQuery = (limit = 12) => ({
+  queryKey: ["trending-props", limit],
+  queryFn: async (): Promise<PropWithGame[]> => {
+    const { data, error } = await supabase
+      .from("player_props")
+      .select("*, games(home_abbr, away_abbr, start_time)")
+      .order("is_trending", { ascending: false })
+      .order("player_name")
+      .limit(limit);
+    if (error) throw error;
+    return (data ?? []) as unknown as PropWithGame[];
+  },
+});
+
+export const searchProfilesQuery = (term: string) => ({
+  queryKey: ["profiles", "search", term],
+  enabled: term.length >= 2,
+  queryFn: async (): Promise<Profile[]> => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, username, avatar_url, bio")
+      .ilike("username", `%${term}%`)
+      .order("username")
+      .limit(25);
+    if (error) throw error;
+    return (data ?? []) as Profile[];
+  },
+});
+
+export type FeedItem = {
+  id: string;
+  user_id: string;
+  body: string | null;
+  bet_id: string | null;
+  created_at: string;
+  profiles: { username: string; avatar_url: string | null } | null;
+  bets: Bet | null;
+  post_likes: { user_id: string }[];
+  comments: { id: string }[];
+};
+
+export const feedQuery = () => ({
+  queryKey: ["feed"],
+  queryFn: async (): Promise<FeedItem[]> => {
+    const { data, error } = await supabase
+      .from("posts")
+      .select(
+        "id, user_id, content, bet_id, created_at, profiles(username, avatar_url), bets(*, bet_legs(*)), post_likes(user_id), comments(id)",
+      )
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    return ((data ?? []) as unknown as (Omit<FeedItem, "body"> & { content: string | null })[]).map(
+      ({ content, ...rest }) => ({ ...rest, body: content }),
+    );
+  },
+});
