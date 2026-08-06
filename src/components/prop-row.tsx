@@ -19,27 +19,30 @@ export function PropRow({ prop, matchup }: { prop: PlayerProp; matchup: string }
     });
 
   return (
-    <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-3">
+    <div className="flex items-center gap-2 border-b border-border bg-card px-3 py-2.5 last:border-b-0">
       <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-sm font-semibold">{prop.player_name}</p>
-        <p className="truncate text-xs text-muted-foreground">
-          {prop.team_abbr} · {market} {prop.line}
+        <p className="truncate text-[13px] font-semibold">{prop.player_name}</p>
+        <p className="truncate text-[11px] text-muted-foreground">
+          {prop.team_abbr} · {market}
         </p>
       </div>
-      <div className="flex w-32 gap-1.5">
+      <div className="grid w-[142px] grid-cols-2 gap-1.5">
         <OddsButton
-          label={`O ${prop.line}`}
+          line={`O ${prop.line}`}
+          label={`Over ${prop.line} ${market}`}
           odds={prop.over_odds}
           active={hasLeg(`prop:${prop.id}:Over`)}
           onClick={() => add("Over", prop.over_odds)}
         />
         <OddsButton
-          label={`U ${prop.line}`}
+          line={`U ${prop.line}`}
+          label={`Under ${prop.line} ${market}`}
           odds={prop.under_odds}
           active={hasLeg(`prop:${prop.id}:Under`)}
           onClick={() => add("Under", prop.under_odds)}
         />
       </div>
+
     </div>
   );
 }
