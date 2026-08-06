@@ -33,8 +33,13 @@ export const placeBet = createServerFn({ method: "POST" })
       if (lErr) throw new Error(lErr.message);
       if (!league) throw new Error("League not found");
 
-      const { data: weekRow, error: wErr } = await supabase.rpc("week_start", {});
-      if (wErr) throw new Error(wErr.message);
+      const now = new Date();
+      const day = (now.getUTCDay() + 6) % 7; // Monday = 0, matches date_trunc('week')
+      const monday = new Date(
+        Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - day),
+      );
+      const weekStart = monday.toISOString().slice(0, 10);
+
 
       const { count, error: cErr } = await supabase
         .from("bets")
