@@ -49,6 +49,7 @@ export const refreshOdds = createServerFn({ method: "POST" })
 
     let upserted = 0;
     const errors: string[] = [];
+    const debug: Array<{ league: string; status: number; fetched: number; upserted: number }> = [];
 
     for (const [league, sportKey] of Object.entries(SPORT_KEYS)) {
       const url =
@@ -59,10 +60,12 @@ export const refreshOdds = createServerFn({ method: "POST" })
       const res = await fetch(url);
       if (!res.ok) {
         errors.push(`${league}: ${res.status} ${await res.text()}`);
+        debug.push({ league, status: res.status, fetched: 0, upserted: 0 });
         continue;
       }
 
       const games = (await res.json()) as OddsApiGame[];
+      let leagueUpserted = 0;
 
       for (const game of games) {
         const dk = game.bookmakers.find((b) => b.key === "draftkings");
@@ -131,8 +134,11 @@ export const refreshOdds = createServerFn({ method: "POST" })
           if (error) errors.push(`${league} ${game.home_team}: ${error.message}`);
         }
         upserted++;
+        leagueUpserted++;
       }
+
+      debug.push({ league, status: res.status, fetched: games.length, upserted: leagueUpserted });
     }
 
-    return { upserted, errors };
+    return { upserted, errors, debug };
   });
