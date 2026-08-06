@@ -84,7 +84,6 @@ export const gamesQuery = (leagueLabel?: string) => ({
   },
 });
 
-
 export const gameQuery = (gameId: string) => ({
   queryKey: ["game", gameId],
   queryFn: async (): Promise<Game | null> => {
@@ -133,10 +132,7 @@ export const profileQuery = (userId: string) => ({
 export const betsQuery = (opts: { userId?: string; leagueId?: string } = {}) => ({
   queryKey: ["bets", opts.userId ?? "all", opts.leagueId ?? "all"],
   queryFn: async (): Promise<Bet[]> => {
-    let q = supabase
-      .from("bets")
-      .select("*, bet_legs(*)")
-      .order("placed_at", { ascending: false });
+    let q = supabase.from("bets").select("*, bet_legs(*)").order("placed_at", { ascending: false });
     if (opts.userId) q = q.eq("user_id", opts.userId);
     if (opts.leagueId) q = q.eq("league_id", opts.leagueId);
     const { data, error } = await q;
@@ -195,6 +191,7 @@ export type FeedPost = {
   user_id: string;
   content: string;
   bet_id: string | null;
+  image_url: string | null;
   created_at: string;
 };
 
@@ -220,16 +217,25 @@ export const likesQuery = () => ({
   },
 });
 
+export type Comment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  profiles: { username: string; avatar_url: string | null } | null;
+};
+
 export const commentsQuery = (postId: string) => ({
   queryKey: ["comments", postId],
-  queryFn: async () => {
+  queryFn: async (): Promise<Comment[]> => {
     const { data, error } = await supabase
       .from("comments")
-      .select("*")
+      .select("*, profiles(username, avatar_url)")
       .eq("post_id", postId)
       .order("created_at");
     if (error) throw error;
-    return data ?? [];
+    return (data ?? []) as unknown as Comment[];
   },
 });
 
@@ -292,6 +298,7 @@ export type FeedItem = {
   user_id: string;
   body: string | null;
   bet_id: string | null;
+  image_url: string | null;
   created_at: string;
   profiles: { username: string; avatar_url: string | null } | null;
   bets: Bet | null;
@@ -305,7 +312,7 @@ export const feedQuery = () => ({
     const { data, error } = await supabase
       .from("posts")
       .select(
-        "id, user_id, content, bet_id, created_at, profiles(username, avatar_url), bets(*, bet_legs(*)), post_likes(user_id), comments(id)",
+        "id, user_id, content, bet_id, image_url, created_at, profiles(username, avatar_url), bets(*, bet_legs(*)), post_likes(user_id), comments(id)",
       )
       .order("created_at", { ascending: false })
       .limit(50);
@@ -313,5 +320,27 @@ export const feedQuery = () => ({
     return ((data ?? []) as unknown as (Omit<FeedItem, "body"> & { content: string | null })[]).map(
       ({ content, ...rest }) => ({ ...rest, body: content }),
     );
+  },
+});
+
+// All user_ids who share at least one league with `userId` (excluding self).
+// Used for the "My Leagues" feed filter.
+export const leagueCoMembersQuery = (userId: string) => ({
+  queryKey: ["league-co-members", userId],
+  queryFn: async (): Promise<string[]> => {
+    const { data: memberships, error } = await supabase
+      .from("league_members")
+      .select("league_id")
+      .eq("user_id", userId);
+    if (error) throw error;
+    const leagueIds = (memberships ?? []).map((m) => m.league_id);
+    if (leagueIds.length === 0) return [];
+
+    const { data: members, error: mErr } = await supabase
+      .from("league_members")
+      .select("user_id")
+      .in("league_id", leagueIds);
+    if (mErr) throw mErr;
+    return Array.from(new Set((members ?? []).map((m) => m.user_id))).filter((id) => id !== userId);
   },
 });
