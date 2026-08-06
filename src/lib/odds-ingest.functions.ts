@@ -50,6 +50,10 @@ export const refreshOdds = createServerFn({ method: "POST" })
     let upserted = 0;
     const errors: string[] = [];
 
+    // Only board games starting inside this window -- The Odds API returns the
+    // whole NFL season, which would otherwise flood the slate.
+    const windowEnd = Date.now() + 10 * DAY_MS;
+
     for (const [league, sportKey] of Object.entries(SPORT_KEYS)) {
       const url =
         `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
@@ -62,7 +66,10 @@ export const refreshOdds = createServerFn({ method: "POST" })
         continue;
       }
 
-      const games = (await res.json()) as OddsApiGame[];
+      const games = ((await res.json()) as OddsApiGame[]).filter(
+        (g) => new Date(g.commence_time).getTime() <= windowEnd,
+      );
+
 
       for (const game of games) {
         const dk = game.bookmakers.find((b) => b.key === "draftkings");
