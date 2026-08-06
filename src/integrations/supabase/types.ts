@@ -196,6 +196,7 @@ export type Database = {
           status: string
           total_line: number
           under_odds: number
+          updated_at: string
         }
         Insert: {
           away_abbr: string
@@ -217,6 +218,7 @@ export type Database = {
           status?: string
           total_line: number
           under_odds?: number
+          updated_at?: string
         }
         Update: {
           away_abbr?: string
@@ -238,6 +240,7 @@ export type Database = {
           status?: string
           total_line?: number
           under_odds?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -309,6 +312,7 @@ export type Database = {
           player_name: string
           team_abbr: string
           under_odds: number
+          updated_at: string
         }
         Insert: {
           created_at?: string
@@ -321,6 +325,7 @@ export type Database = {
           player_name: string
           team_abbr: string
           under_odds?: number
+          updated_at?: string
         }
         Update: {
           created_at?: string
@@ -333,6 +338,7 @@ export type Database = {
           player_name?: string
           team_abbr?: string
           under_odds?: number
+          updated_at?: string
         }
         Relationships: [
           {
@@ -376,6 +382,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           user_id: string
         }
         Insert: {
@@ -383,6 +390,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           user_id: string
         }
         Update: {
@@ -390,6 +398,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           user_id?: string
         }
         Relationships: [
