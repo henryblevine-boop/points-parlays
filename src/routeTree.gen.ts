@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSocialRouteImport } from './routes/_authenticated/social'
+import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +46,12 @@ const AuthenticatedSocialRoute = AuthenticatedSocialRouteImport.update({
   path: '/social',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedGroupsIndexRoute =
+  AuthenticatedGroupsIndexRouteImport.update({
+    id: '/groups/',
+    path: '/groups/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AuthenticatedHomeRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/groups/': typeof AuthenticatedGroupsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/groups': typeof AuthenticatedGroupsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +77,13 @@ export interface FileRoutesById {
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/social': typeof AuthenticatedSocialRoute
+  '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/home' | '/search' | '/social'
+  fullPaths: '/' | '/auth' | '/home' | '/search' | '/social' | '/groups/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/home' | '/search' | '/social'
+  to: '/' | '/auth' | '/home' | '/search' | '/social' | '/groups'
   id:
     | '__root__'
     | '/'
@@ -82,6 +92,7 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/search'
     | '/_authenticated/social'
+    | '/_authenticated/groups/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -134,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSocialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/groups/': {
+      id: '/_authenticated/groups/'
+      path: '/groups'
+      fullPath: '/groups/'
+      preLoaderRoute: typeof AuthenticatedGroupsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -141,12 +159,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSocialRoute: typeof AuthenticatedSocialRoute
+  AuthenticatedGroupsIndexRoute: typeof AuthenticatedGroupsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSocialRoute: AuthenticatedSocialRoute,
+  AuthenticatedGroupsIndexRoute: AuthenticatedGroupsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

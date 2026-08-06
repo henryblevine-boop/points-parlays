@@ -19,7 +19,7 @@ import { myLeaguesQuery } from "@/lib/data";
 import { useSessionUser } from "@/hooks/use-session-user";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/groups")({
+export const Route = createFileRoute("/_authenticated/groups/")({
   head: () => ({
     meta: [
       { title: "My Leagues — ParlayPals" },
