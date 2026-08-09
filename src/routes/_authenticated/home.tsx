@@ -144,21 +144,30 @@ function HomePage() {
             No games on the board for {league}.
           </p>
         )}
-        {sections.map(({ league: sectionLeague, games: sectionGames }) => (
-          <div key={sectionLeague}>
-            <div className="flex items-center justify-between border-b border-border bg-elevated px-4 py-1.5">
-              <h2 className="font-display text-xs font-bold uppercase tracking-widest text-foreground">
-                {sectionLeague}
-              </h2>
-              <span className="text-[10px] font-semibold text-muted-foreground">
-                {sectionGames.length} games
-              </span>
+        {sections.map(({ league: sectionLeague, games: sectionGames }) => {
+          const first = sectionGames[0];
+          const daysOut = first
+            ? Math.ceil((new Date(first.start_time).getTime() - Date.now()) / 86_400_000)
+            : 0;
+          return (
+            <div key={sectionLeague}>
+              <div className="flex items-center justify-between border-b border-border bg-elevated px-4 py-1.5">
+                <h2 className="font-display text-xs font-bold uppercase tracking-widest text-foreground">
+                  {sectionLeague}
+                </h2>
+                <span className="text-[10px] font-semibold text-muted-foreground">
+                  {daysOut > 2
+                    ? `Opening slate — first game in ${daysOut} days`
+                    : `${sectionGames.length} games`}
+                </span>
+              </div>
+              {sectionGames.map((game) => (
+                <GameCard key={game.id} game={game} />
+              ))}
             </div>
-            {sectionGames.map((game) => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </div>
-        ))}
+          );
+        })}
+
       </section>
 
       {props && props.length > 0 && (

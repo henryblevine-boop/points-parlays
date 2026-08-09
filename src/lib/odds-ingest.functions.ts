@@ -84,9 +84,19 @@ async function ingestGames(
       continue;
     }
 
-    const games = ((await res.json()) as OddsApiGame[]).filter(
-      (g) => new Date(g.commence_time).getTime() <= windowEnd,
+    const all = ((await res.json()) as OddsApiGame[]).sort((a, b) =>
+      a.commence_time.localeCompare(b.commence_time),
     );
+    let games = all.filter((g) => new Date(g.commence_time).getTime() <= windowEnd);
+
+    // Off-season league (e.g. NFL in August): nothing starts within the
+    // window, so board the opening slate -- the first upcoming game plus the
+    // following week -- instead of showing an empty board.
+    if (games.length === 0 && all.length > 0) {
+      const firstMs = new Date(all[0]!.commence_time).getTime();
+      games = all.filter((g) => new Date(g.commence_time).getTime() <= firstMs + 7 * DAY_MS);
+    }
+
     let leagueUpserted = 0;
     const isSoccer = SOCCER_LEAGUES.has(league);
 
