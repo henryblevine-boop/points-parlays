@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Trophy } from "lucide-react";
 import { toast } from "sonner";
 
 import { GameCard } from "@/components/game-card";
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/home")({
   component: HomePage,
 });
 
-const LEAGUE_ORDER = ["NFL", "NBA", "MLB", "NHL"] as const;
+const LEAGUE_ORDER = ["NFL", "NBA", "MLB", "NHL", "MLS", "La Liga"] as const;
 const leagues = ["All", ...LEAGUE_ORDER] as const;
 
 function groupByLeague(games: Game[]): { league: string; games: Game[] }[] {
@@ -71,7 +71,12 @@ function HomePage() {
     onSuccess: (result) => {
       setLastRefreshedAt(Date.now());
       queryClient.invalidateQueries({ queryKey: ["games"] });
-      toast.success(`Odds updated — ${result.upserted} games synced from DraftKings.`);
+      queryClient.invalidateQueries({ queryKey: ["futures"] });
+      queryClient.invalidateQueries({ queryKey: ["trending-props"] });
+      toast.success(
+        `Odds updated — ${result.gamesUpserted} games, ${result.propsUpserted} props, ` +
+          `${result.futuresUpserted} futures synced from DraftKings.`,
+      );
       if (result.errors.length > 0) console.warn("[odds refresh]", result.errors);
     },
     onError: (err) => toast.error(err instanceof Error ? err.message : "Couldn't refresh odds."),
@@ -111,6 +116,16 @@ function HomePage() {
             Odds
           </button>
         </div>
+      </div>
+
+      <div className="px-4">
+        <Link
+          to="/futures"
+          className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/50"
+        >
+          <Trophy className="size-4 text-primary" aria-hidden />
+          Futures — season-long championship bets
+        </Link>
       </div>
 
       <section className="space-y-3">

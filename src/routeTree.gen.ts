@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedFuturesRouteImport } from './routes/_authenticated/futures'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSocialRouteImport } from './routes/_authenticated/social'
@@ -34,6 +35,11 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFuturesRoute = AuthenticatedFuturesRouteImport.update({
+  id: '/futures',
+  path: '/futures',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
@@ -83,6 +89,7 @@ const AuthenticatedProfileUserIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/futures': typeof AuthenticatedFuturesRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/social': typeof AuthenticatedSocialRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/futures'
     | '/home'
     | '/search'
     | '/social'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/futures'
     | '/home'
     | '/search'
     | '/social'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/futures'
     | '/_authenticated/home'
     | '/_authenticated/search'
     | '/_authenticated/social'
@@ -186,6 +198,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/futures': {
+      id: '/_authenticated/futures'
+      path: '/futures'
+      fullPath: '/futures'
+      preLoaderRoute: typeof AuthenticatedFuturesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
       id: '/_authenticated/home'
@@ -247,6 +266,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFuturesRoute: typeof AuthenticatedFuturesRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSocialRoute: typeof AuthenticatedSocialRoute
@@ -258,6 +278,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFuturesRoute: AuthenticatedFuturesRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSocialRoute: AuthenticatedSocialRoute,

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { untyped } from "@/integrations/supabase/untyped";
 
 export type Game = {
   id: string;
@@ -15,6 +16,7 @@ export type Game = {
   spread_away_odds: number;
   ml_home: number;
   ml_away: number;
+  ml_draw: number | null;
   total_line: number;
   over_odds: number;
   under_odds: number;
@@ -80,7 +82,7 @@ export const gamesQuery = (leagueLabel?: string) => ({
     if (leagueLabel) q = q.eq("league_label", leagueLabel);
     const { data, error } = await q;
     if (error) throw error;
-    return (data ?? []) as Game[];
+    return (data ?? []) as unknown as Game[];
   },
 });
 
@@ -89,7 +91,7 @@ export const gameQuery = (gameId: string) => ({
   queryFn: async (): Promise<Game | null> => {
     const { data, error } = await supabase.from("games").select("*").eq("id", gameId).maybeSingle();
     if (error) throw error;
-    return data as Game | null;
+    return data as unknown as Game | null;
   },
 });
 
@@ -342,5 +344,28 @@ export const leagueCoMembersQuery = (userId: string) => ({
       .in("league_id", leagueIds);
     if (mErr) throw mErr;
     return Array.from(new Set((members ?? []).map((m) => m.user_id))).filter((id) => id !== userId);
+  },
+});
+
+export type FuturesMarket = {
+  id: string;
+  sport: string;
+  league_label: string;
+  title: string;
+  selection: string;
+  odds: number;
+};
+
+export const futuresQuery = () => ({
+  queryKey: ["futures"],
+  queryFn: async (): Promise<FuturesMarket[]> => {
+    const { data, error } = await untyped(supabase)
+      .from("futures_markets")
+      .select("*")
+      .order("league_label")
+      .order("title")
+      .order("odds", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as FuturesMarket[];
   },
 });

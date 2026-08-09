@@ -117,6 +117,27 @@ export function GameCard({ game }: { game: Game }) {
           active={hasLeg(`game:${game.id}:Moneyline:${game.home_abbr} ML`)}
           onClick={() => add("Moneyline", `${game.home_abbr} ML`, game.ml_home)}
         />
+
+        {/* Draw (soccer only) */}
+        {game.ml_draw != null && (
+          <>
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-elevated text-[9px] font-bold tracking-tight text-muted-foreground">
+                —
+              </span>
+              <span className="truncate text-[13px] font-semibold text-muted-foreground">Draw</span>
+            </div>
+            <div />
+            <div />
+            <OddsButton
+              label="Draw"
+              odds={game.ml_draw}
+              disabled={locked}
+              active={hasLeg(`game:${game.id}:Moneyline:Draw`)}
+              onClick={() => add("Moneyline", "Draw", game.ml_draw as number)}
+            />
+          </>
+        )}
       </div>
 
       <Link
