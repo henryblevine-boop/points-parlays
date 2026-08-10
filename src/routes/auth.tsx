@@ -83,18 +83,44 @@ function AuthPage() {
         data: { username: parsed.data.username },
       },
     });
-    setLoading(false);
+
     if (error) {
-      toast.error(error.message);
+      setLoading(false);
+      toast.error(
+        error.message.toLowerCase().includes("already")
+          ? "That email already has an account — log in instead."
+          : error.message,
+      );
       return;
     }
-    if (!data.session) {
-      toast.success("Check your email", {
-        description: "Confirm your address to finish creating your account.",
-      });
-      return;
+
+    // Auto-confirm is on, so signUp returns a session. If it somehow doesn't,
+    // sign in explicitly so the user is never stranded on this screen.
+    let session = data.session;
+    if (!session) {
+      const { data: signInData, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: parsed.data.email,
+          password: parsed.data.password,
+        });
+      if (signInError) {
+        setLoading(false);
+        toast.error(signInError.message);
+        return;
+      }
+      session = signInData.session;
     }
+
+    if (session?.user) {
+      await supabase
+        .from("profiles")
+        .upsert({ id: session.user.id, username: parsed.data.username }, { onConflict: "id" });
+    }
+
+    setLoading(false);
+    toast.success(`Welcome, ${parsed.data.username}!`);
     navigate({ to: "/home" });
+
   };
 
   const google = async () => {
