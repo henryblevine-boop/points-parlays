@@ -175,6 +175,39 @@ export type Database = {
         }
         Relationships: []
       }
+      futures_markets: {
+        Row: {
+          created_at: string
+          id: string
+          league_label: string
+          odds: number
+          selection: string
+          sport: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          league_label: string
+          odds: number
+          selection: string
+          sport: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          league_label?: string
+          odds?: number
+          selection?: string
+          sport?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       games: {
         Row: {
           away_abbr: string
@@ -186,6 +219,7 @@ export type Database = {
           is_featured: boolean
           league_label: string
           ml_away: number
+          ml_draw: number | null
           ml_home: number
           over_odds: number
           sport: string
@@ -208,6 +242,7 @@ export type Database = {
           is_featured?: boolean
           league_label: string
           ml_away: number
+          ml_draw?: number | null
           ml_home: number
           over_odds?: number
           sport: string
@@ -230,6 +265,7 @@ export type Database = {
           is_featured?: boolean
           league_label?: string
           ml_away?: number
+          ml_draw?: number | null
           ml_home?: number
           over_odds?: number
           sport?: string
@@ -310,7 +346,7 @@ export type Database = {
           market: string
           over_odds: number
           player_name: string
-          team_abbr: string
+          team_abbr: string | null
           under_odds: number
           updated_at: string
         }
@@ -323,7 +359,7 @@ export type Database = {
           market: string
           over_odds?: number
           player_name: string
-          team_abbr: string
+          team_abbr?: string | null
           under_odds?: number
           updated_at?: string
         }
@@ -336,7 +372,7 @@ export type Database = {
           market?: string
           over_odds?: number
           player_name?: string
-          team_abbr?: string
+          team_abbr?: string | null
           under_odds?: number
           updated_at?: string
         }
