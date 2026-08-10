@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { formatOdds, formatPoints } from "@/lib/odds";
 import type { Bet } from "@/lib/data";
@@ -6,10 +7,12 @@ export function BetSlipCard({
   bet,
   compact,
   className,
+  action,
 }: {
   bet: Bet;
   compact?: boolean;
   className?: string;
+  action?: ReactNode;
 }) {
   const won = bet.status === "won";
   const lost = bet.status === "lost";
@@ -36,9 +39,10 @@ export function BetSlipCard({
           {bet.bet_legs.length > 1 ? `${bet.bet_legs.length}-Leg Parlay` : "Straight"} ·{" "}
           {formatOdds(bet.combined_odds)}
         </span>
-        <span className="tabular-nums">
+        <span className="flex items-center gap-2 tabular-nums">
           {won ? "HIT" : lost ? "MISS" : "PENDING"}
           {bet.status !== "pending" ? ` ${formatPoints(bet.points_delta)}` : ""}
+          {action}
         </span>
       </div>
       <ul className="divide-y divide-border">

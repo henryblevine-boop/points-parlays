@@ -63,6 +63,7 @@ export type Bet = {
   week_start: string;
   placed_at: string;
   settled_at: string | null;
+  is_pinned: boolean;
   bet_legs: BetLeg[];
 };
 
@@ -139,7 +140,7 @@ export const betsQuery = (opts: { userId?: string; leagueId?: string } = {}) => 
     if (opts.leagueId) q = q.eq("league_id", opts.leagueId);
     const { data, error } = await q;
     if (error) throw error;
-    return (data ?? []) as Bet[];
+    return (data ?? []) as unknown as Bet[];
   },
 });
 

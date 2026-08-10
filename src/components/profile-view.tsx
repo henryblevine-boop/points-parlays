@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BetSlipCard } from "@/components/bet-slip-card";
+import { PinBetButton } from "@/components/pin-bet-button";
 import { formatPoints } from "@/lib/odds";
 import type { Bet, Profile } from "@/lib/data";
 
@@ -20,6 +21,9 @@ export function ProfileView({
   const losses = settled.filter((b) => b.status === "lost").length;
   const points = settled.reduce((sum, b) => sum + b.points_delta, 0);
   const winRate = settled.length ? Math.round((wins / settled.length) * 100) : 0;
+
+  const pinned = bets.find((b) => b.is_pinned);
+  const rest = bets.filter((b) => !b.is_pinned);
 
   return (
     <div className="space-y-5">
@@ -45,15 +49,37 @@ export function ProfileView({
         <Stat label="Win rate" value={`${winRate}%`} />
       </dl>
 
+      {pinned && (
+        <section className="space-y-2">
+          <h2 className="font-display text-lg font-bold">Featured pick</h2>
+          <BetSlipCard
+            bet={pinned}
+            action={
+              isSelf ? (
+                <PinBetButton userId={pinned.user_id} betId={pinned.id} isPinned />
+              ) : undefined
+            }
+          />
+        </section>
+      )}
+
       <section className="space-y-2">
         <h2 className="font-display text-lg font-bold">Bet history</h2>
-        {bets.length === 0 && (
+        {rest.length === 0 && (
           <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
             No bets yet.
           </p>
         )}
-        {bets.map((bet) => (
-          <BetSlipCard key={bet.id} bet={bet} />
+        {rest.map((bet) => (
+          <BetSlipCard
+            key={bet.id}
+            bet={bet}
+            action={
+              isSelf ? (
+                <PinBetButton userId={bet.user_id} betId={bet.id} isPinned={false} />
+              ) : undefined
+            }
+          />
         ))}
       </section>
     </div>
