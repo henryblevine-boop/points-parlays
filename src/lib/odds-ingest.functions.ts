@@ -4,8 +4,12 @@ import { untyped } from "@/integrations/supabase/untyped";
 import { teamAbbreviation } from "./team-abbreviations";
 import { PLAYER_PROP_MARKETS } from "./prop-markets";
 
-// League label used throughout this app -> The Odds API's sport key.
-const SPORT_KEYS: Record<string, string> = {
+// Every league this app knows how to ingest -> The Odds API's sport key.
+// MVP focus is NFL only (see ACTIVE_LEAGUES below) so the full API quota
+// goes toward deep NFL coverage instead of spreading thin across sports.
+// The rest stay defined here so re-enabling one later is a one-line change,
+// not a rewrite.
+const ALL_SPORT_KEYS: Record<string, string> = {
   NFL: "americanfootball_nfl",
   NBA: "basketball_nba",
   MLB: "baseball_mlb",
@@ -14,19 +18,28 @@ const SPORT_KEYS: Record<string, string> = {
   "La Liga": "soccer_spain_la_liga",
 };
 
-// Soccer leagues get a 3-way moneyline (Home/Draw/Away) instead of 2-way.
-const SOCCER_LEAGUES = new Set(["MLS", "La Liga"]);
-
-// The Odds API exposes season-long futures as their own dedicated sport
-// keys (separate from the game-odds sport key above), returning outright
-// odds to win the whole competition rather than a single matchup.
-const FUTURES_SPORT_KEYS: Record<string, string> = {
+const ALL_FUTURES_SPORT_KEYS: Record<string, string> = {
   NFL: "americanfootball_nfl_super_bowl_winner",
   NBA: "basketball_nba_championship_winner",
   MLB: "baseball_mlb_world_series_winner",
   NHL: "icehockey_nhl_championship_winner",
   "La Liga": "soccer_spain_la_liga_winner",
 };
+
+const ACTIVE_LEAGUES = ["NFL"];
+
+const SPORT_KEYS = Object.fromEntries(
+  ACTIVE_LEAGUES.filter((l) => l in ALL_SPORT_KEYS).map((l) => [l, ALL_SPORT_KEYS[l]!]),
+);
+const FUTURES_SPORT_KEYS = Object.fromEntries(
+  ACTIVE_LEAGUES.filter((l) => l in ALL_FUTURES_SPORT_KEYS).map((l) => [
+    l,
+    ALL_FUTURES_SPORT_KEYS[l]!,
+  ]),
+);
+
+// Soccer leagues get a 3-way moneyline (Home/Draw/Away) instead of 2-way.
+const SOCCER_LEAGUES = new Set(["MLS", "La Liga"]);
 
 interface OddsApiOutcome {
   name: string;
@@ -57,8 +70,9 @@ interface OddsApiFuturesEvent {
 const DAY_MS = 24 * 60 * 60 * 1000;
 // Cap events queried for props per league -- each event needs its own API
 // call, so this keeps a manual refresh from burning through the (limited)
-// monthly quota.
-const MAX_PROP_EVENTS_PER_LEAGUE = 3;
+// monthly quota. NFL-only now, so this can afford to cover most of a week's
+// slate instead of just a few marquee games.
+const MAX_PROP_EVENTS_PER_LEAGUE = 10;
 
 async function ingestGames(
   supabaseAdmin: ReturnType<typeof untyped>,

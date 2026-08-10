@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BetSlipCard } from "@/components/bet-slip-card";
 import { formatPoints } from "@/lib/odds";
@@ -7,10 +8,12 @@ export function ProfileView({
   profile,
   bets,
   isSelf,
+  headerAction,
 }: {
   profile: Profile | null;
   bets: Bet[];
   isSelf?: boolean;
+  headerAction?: ReactNode;
 }) {
   const settled = bets.filter((b) => b.status !== "pending");
   const wins = settled.filter((b) => b.status === "won").length;
@@ -25,7 +28,7 @@ export function ProfileView({
           <AvatarImage src={profile?.avatar_url ?? undefined} alt="" />
           <AvatarFallback>{(profile?.username ?? "??").slice(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h1 className="truncate font-display text-xl font-extrabold">
             {profile?.username ?? (isSelf ? "You" : "Member")}
           </h1>
@@ -33,6 +36,7 @@ export function ProfileView({
             {profile?.bio ?? (isSelf ? "Add a bio from your league profile." : "ParlayPals member")}
           </p>
         </div>
+        {headerAction}
       </header>
 
       <dl className="grid grid-cols-3 gap-2 text-center">

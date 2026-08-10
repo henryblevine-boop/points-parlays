@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { ProfileView } from "@/components/profile-view";
+import { EditBioButton } from "@/components/edit-bio-button";
 import { useSessionUser } from "@/hooks/use-session-user";
 import { profileQuery, betsQuery } from "@/lib/data";
 
@@ -26,5 +27,14 @@ function MyProfile() {
   const { data: profile } = useQuery({ ...profileQuery(userId), enabled: Boolean(userId) });
   const { data: bets = [] } = useQuery({ ...betsQuery({ userId }), enabled: Boolean(userId) });
 
-  return <ProfileView profile={profile ?? null} bets={bets} isSelf />;
+  return (
+    <ProfileView
+      profile={profile ?? null}
+      bets={bets}
+      isSelf
+      headerAction={
+        userId ? <EditBioButton userId={userId} currentBio={profile?.bio ?? null} /> : null
+      }
+    />
+  );
 }

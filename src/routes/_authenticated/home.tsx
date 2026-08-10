@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { GameCard } from "@/components/game-card";
 import { PropRow } from "@/components/prop-row";
 import { Skeleton } from "@/components/ui/skeleton";
-import { gamesQuery, trendingPropsQuery, type Game } from "@/lib/data";
+import { gamesQuery, trendingPropsQuery } from "@/lib/data";
 import { refreshOdds } from "@/lib/odds-ingest.functions";
 import { cn } from "@/lib/utils";
 
@@ -19,49 +19,21 @@ export const Route = createFileRoute("/_authenticated/home")({
       { title: "Today's Slate — ParlayPals" },
       {
         name: "description",
-        content: "Browse tonight's games and player props, then build your free-to-play bet slip.",
+        content:
+          "Browse this week's NFL games and player props, then build your free-to-play bet slip.",
       },
       { property: "og:title", content: "Today's Slate — ParlayPals" },
       {
         property: "og:description",
-        content: "Browse games and player props and build your free-to-play bet slip.",
+        content: "Browse NFL games and player props and build your free-to-play bet slip.",
       },
     ],
   }),
   component: HomePage,
 });
 
-const LEAGUE_ORDER = ["NFL", "NBA", "MLB", "NHL", "MLS", "La Liga"] as const;
-const leagues = ["All", ...LEAGUE_ORDER] as const;
-
-function groupByLeague(games: Game[]): { league: string; games: Game[] }[] {
-  const bySport = new Map<string, Game[]>();
-  for (const game of games) {
-    const list = bySport.get(game.league_label) ?? [];
-    list.push(game);
-    bySport.set(game.league_label, list);
-  }
-  for (const list of bySport.values()) {
-    list.sort((a, b) => {
-      if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
-      return a.start_time.localeCompare(b.start_time);
-    });
-  }
-
-  const known = LEAGUE_ORDER.filter((l) => bySport.has(l)).map((l) => ({
-    league: l,
-    games: bySport.get(l)!,
-  }));
-  const rest = Array.from(bySport.keys())
-    .filter((l) => !(LEAGUE_ORDER as readonly string[]).includes(l))
-    .sort()
-    .map((l) => ({ league: l, games: bySport.get(l)! }));
-  return [...known, ...rest];
-}
-
 function HomePage() {
-  const [league, setLeague] = useState<(typeof leagues)[number]>("All");
-  const { data: games, isLoading } = useQuery(gamesQuery(league === "All" ? undefined : league));
+  const { data: games, isLoading } = useQuery(gamesQuery("NFL"));
   const { data: props } = useQuery(trendingPropsQuery());
   const queryClient = useQueryClient();
   const [lastRefreshedAt, setLastRefreshedAt] = useState(0);
@@ -83,39 +55,32 @@ function HomePage() {
   });
 
   const onCooldown = Date.now() - lastRefreshedAt < REFRESH_COOLDOWN_MS;
-  const sections = games ? groupByLeague(games) : [];
+
+  const sortedGames = games
+    ? [...games].sort((a, b) => {
+        if (a.is_featured !== b.is_featured) return a.is_featured ? -1 : 1;
+        return a.start_time.localeCompare(b.start_time);
+      })
+    : [];
+  const first = sortedGames[0];
+  const daysOut = first
+    ? Math.ceil((new Date(first.start_time).getTime() - Date.now()) / 86_400_000)
+    : 0;
 
   return (
     <div className="-mx-4 space-y-4">
-      {/* DraftKings-style sport tab bar */}
-      <div className="sticky top-0 z-10 border-b border-border bg-background">
-        <div className="flex items-center gap-4 overflow-x-auto px-4">
-          {leagues.map((l) => (
-            <button
-              key={l}
-              type="button"
-              onClick={() => setLeague(l)}
-              className={cn(
-                "shrink-0 border-b-2 px-1 pb-2.5 pt-3 text-sm font-bold uppercase tracking-wide transition-colors",
-                league === l
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground",
-              )}
-            >
-              {l}
-            </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => refresh.mutate()}
-            disabled={refresh.isPending || onCooldown}
-            className="ml-auto flex shrink-0 items-center gap-1.5 py-2 text-xs font-semibold text-muted-foreground disabled:opacity-50"
-            aria-label="Refresh odds from DraftKings"
-          >
-            <RefreshCw className={cn("size-3.5", refresh.isPending && "animate-spin")} />
-            Odds
-          </button>
-        </div>
+      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background px-4 py-3">
+        <h1 className="font-display text-lg font-extrabold uppercase tracking-wide">NFL</h1>
+        <button
+          type="button"
+          onClick={() => refresh.mutate()}
+          disabled={refresh.isPending || onCooldown}
+          className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-muted-foreground disabled:opacity-50"
+          aria-label="Refresh odds from DraftKings"
+        >
+          <RefreshCw className={cn("size-3.5", refresh.isPending && "animate-spin")} />
+          Odds
+        </button>
       </div>
 
       <div className="px-4">
@@ -128,10 +93,17 @@ function HomePage() {
         </Link>
       </div>
 
-      <section className="space-y-3">
-        <h1 className="px-4 font-display text-lg font-extrabold uppercase tracking-wide">
-          Today's slate
-        </h1>
+      <section className="space-y-2">
+        <div className="flex items-center justify-between px-4">
+          <h2 className="font-display text-xs font-bold uppercase tracking-widest text-muted-foreground">
+            This week's slate
+          </h2>
+          {daysOut > 2 && (
+            <span className="text-[10px] font-semibold text-muted-foreground">
+              Opening slate — first game in {daysOut} days
+            </span>
+          )}
+        </div>
         {isLoading && (
           <div className="space-y-2 px-4">
             {[0, 1, 2].map((i) => (
@@ -139,35 +111,14 @@ function HomePage() {
             ))}
           </div>
         )}
-        {!isLoading && sections.length === 0 && (
+        {!isLoading && sortedGames.length === 0 && (
           <p className="mx-4 rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
-            No games on the board for {league}.
+            No games on the board yet. Tap "Odds" to pull the latest lines from DraftKings.
           </p>
         )}
-        {sections.map(({ league: sectionLeague, games: sectionGames }) => {
-          const first = sectionGames[0];
-          const daysOut = first
-            ? Math.ceil((new Date(first.start_time).getTime() - Date.now()) / 86_400_000)
-            : 0;
-          return (
-            <div key={sectionLeague}>
-              <div className="flex items-center justify-between border-b border-border bg-elevated px-4 py-1.5">
-                <h2 className="font-display text-xs font-bold uppercase tracking-widest text-foreground">
-                  {sectionLeague}
-                </h2>
-                <span className="text-[10px] font-semibold text-muted-foreground">
-                  {daysOut > 2
-                    ? `Opening slate — first game in ${daysOut} days`
-                    : `${sectionGames.length} games`}
-                </span>
-              </div>
-              {sectionGames.map((game) => (
-                <GameCard key={game.id} game={game} />
-              ))}
-            </div>
-          );
-        })}
-
+        {sortedGames.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
       </section>
 
       {props && props.length > 0 && (

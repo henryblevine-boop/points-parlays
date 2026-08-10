@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { ProfileView } from "@/components/profile-view";
+import { FriendButton } from "@/components/friend-button";
 import { profileQuery, betsQuery } from "@/lib/data";
 
 export const Route = createFileRoute("/_authenticated/profile/$userId")({
@@ -27,5 +28,11 @@ function MemberProfile() {
   const { data: profile } = useQuery(profileQuery(userId));
   const { data: bets = [] } = useQuery(betsQuery({ userId }));
 
-  return <ProfileView profile={profile ?? null} bets={bets} />;
+  return (
+    <ProfileView
+      profile={profile ?? null}
+      bets={bets}
+      headerAction={<FriendButton targetUserId={userId} />}
+    />
+  );
 }
