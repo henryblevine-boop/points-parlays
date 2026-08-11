@@ -80,6 +80,7 @@ export type Database = {
           bet_type: string
           combined_odds: number
           id: string
+          is_pinned: boolean
           league_id: string | null
           placed_at: string
           points_delta: number
@@ -92,6 +93,7 @@ export type Database = {
           bet_type?: string
           combined_odds: number
           id?: string
+          is_pinned?: boolean
           league_id?: string | null
           placed_at?: string
           points_delta?: number
@@ -104,6 +106,7 @@ export type Database = {
           bet_type?: string
           combined_odds?: number
           id?: string
+          is_pinned?: boolean
           league_id?: string | null
           placed_at?: string
           points_delta?: number
