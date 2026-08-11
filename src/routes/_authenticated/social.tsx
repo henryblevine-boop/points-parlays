@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Heart, MessageCircle, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Trash2, MessagesSquare } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { EmptyState } from "@/components/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 import { BetSlipCard } from "@/components/bet-slip-card";
 import { PostComposer } from "@/components/post-composer";
 import { CommentThread } from "@/components/comment-thread";
@@ -98,11 +110,13 @@ function SocialPage() {
       {isLoading && [0, 1, 2].map((i) => <Skeleton key={i} className="h-40 w-full rounded-xl" />)}
 
       {!isLoading && visiblePosts.length === 0 && (
-        <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-          {filter === "all"
-            ? "Nothing here yet. Be the first to post."
-            : "Nothing here yet from this group."}
-        </p>
+        <EmptyState
+          icon={MessagesSquare}
+          title={filter === "all" ? "Nothing here yet" : "Nothing here yet from this group"}
+          body={
+            filter === "all" ? "Be the first to post a pick, a meme, or a bad beat." : undefined
+          }
+        />
       )}
 
       {visiblePosts.map((post) => {
@@ -138,14 +152,34 @@ function SocialPage() {
                 </div>
               </Link>
               {isMine && (
-                <button
-                  type="button"
-                  onClick={() => remove.mutate(post.id)}
-                  className="rounded-full p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                  aria-label="Delete post"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      type="button"
+                      className="rounded-full p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      aria-label="Delete post"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete this post?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This can't be undone. Any likes and replies on it will be deleted too.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => remove.mutate(post.id)}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               )}
             </header>
 

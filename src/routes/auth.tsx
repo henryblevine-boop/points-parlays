@@ -13,6 +13,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: z.object({
+    tab: z.enum(["signin", "signup"]).optional(),
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — ParlayPals" },
@@ -44,6 +47,7 @@ const signUpSchema = z.object({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { tab } = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -98,11 +102,10 @@ function AuthPage() {
     // sign in explicitly so the user is never stranded on this screen.
     let session = data.session;
     if (!session) {
-      const { data: signInData, error: signInError } =
-        await supabase.auth.signInWithPassword({
-          email: parsed.data.email,
-          password: parsed.data.password,
-        });
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: parsed.data.email,
+        password: parsed.data.password,
+      });
       if (signInError) {
         setLoading(false);
         toast.error(signInError.message);
@@ -120,7 +123,6 @@ function AuthPage() {
     setLoading(false);
     toast.success(`Welcome, ${parsed.data.username}!`);
     navigate({ to: "/home" });
-
   };
 
   const google = async () => {
@@ -145,7 +147,7 @@ function AuthPage() {
       </Link>
 
       <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-5">
-        <Tabs defaultValue="signin">
+        <Tabs defaultValue={tab === "signup" ? "signup" : "signin"}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Log in</TabsTrigger>
             <TabsTrigger value="signup">Sign up</TabsTrigger>

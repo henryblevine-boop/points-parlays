@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { EmptyState } from "@/components/empty-state";
 import {
   Dialog,
   DialogContent,
@@ -25,7 +26,8 @@ export const Route = createFileRoute("/_authenticated/groups/")({
       { title: "My Leagues — ParlayPals" },
       {
         name: "description",
-        content: "Create or join a private ParlayPals league, set weekly bet limits and track standings.",
+        content:
+          "Create or join a private ParlayPals league, set weekly bet limits and track standings.",
       },
       { property: "og:title", content: "My Leagues — ParlayPals" },
       {
@@ -189,9 +191,11 @@ function GroupsPage() {
       </div>
 
       {leagues.length === 0 && (
-        <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-          You're not in a league yet. Create one and share the invite code with friends.
-        </p>
+        <EmptyState
+          icon={Trophy}
+          title="You're not in a league yet"
+          body="Create one and share the invite code with friends to get started."
+        />
       )}
 
       <ul className="space-y-2">

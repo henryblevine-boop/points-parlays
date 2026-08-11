@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Copy } from "lucide-react";
+import { Copy, Activity } from "lucide-react";
 import { toast } from "sonner";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BetSlipCard } from "@/components/bet-slip-card";
+import { EmptyState } from "@/components/empty-state";
 import { betsQuery, leagueQuery, leagueMembersQuery, profilesQuery } from "@/lib/data";
 import { buildStandings } from "@/lib/standings";
 import { formatPoints } from "@/lib/odds";
@@ -15,7 +16,8 @@ export const Route = createFileRoute("/_authenticated/groups/$leagueId")({
       { title: "League Standings — ParlayPals" },
       {
         name: "description",
-        content: "Weekly standings, member records and recent bet slips for your ParlayPals league.",
+        content:
+          "Weekly standings, member records and recent bet slips for your ParlayPals league.",
       },
       { property: "og:title", content: "League Standings — ParlayPals" },
       {
@@ -106,9 +108,7 @@ function LeaguePage() {
       <section className="space-y-2">
         <h2 className="font-display text-lg font-bold">League activity</h2>
         {bets.length === 0 && (
-          <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-            No bets placed in this league yet.
-          </p>
+          <EmptyState icon={Activity} title="No bets placed in this league yet" />
         )}
         {bets.slice(0, 20).map((bet) => (
           <div key={bet.id} className="space-y-1">

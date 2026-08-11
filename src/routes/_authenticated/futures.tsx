@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { Trophy } from "lucide-react";
 
 import { OddsButton } from "@/components/odds-button";
+import { EmptyState } from "@/components/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { futuresQuery, type FuturesMarket } from "@/lib/data";
 import { useBetSlip } from "@/lib/bet-slip";
@@ -50,9 +52,11 @@ function FuturesPage() {
       {isLoading && [0, 1].map((i) => <Skeleton key={i} className="h-40 w-full rounded-xl" />)}
 
       {!isLoading && grouped.size === 0 && (
-        <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-          No futures on the board yet. Try refreshing odds from Home.
-        </p>
+        <EmptyState
+          icon={Trophy}
+          title="No futures on the board yet"
+          body="Head to Home and tap “Odds” to pull the latest championship lines."
+        />
       )}
 
       {Array.from(grouped.entries()).map(([league, byTitle]) => (

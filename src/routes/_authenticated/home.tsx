@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { RefreshCw, Trophy } from "lucide-react";
+import { RefreshCw, Trophy, CalendarClock } from "lucide-react";
 import { toast } from "sonner";
 
 import { GameCard } from "@/components/game-card";
 import { PropRow } from "@/components/prop-row";
+import { EmptyState } from "@/components/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { gamesQuery, trendingPropsQuery } from "@/lib/data";
 import { refreshOdds } from "@/lib/odds-ingest.functions";
@@ -112,9 +113,13 @@ function HomePage() {
           </div>
         )}
         {!isLoading && sortedGames.length === 0 && (
-          <p className="mx-4 rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
-            No games on the board yet. Tap "Odds" to pull the latest lines from DraftKings.
-          </p>
+          <div className="px-4">
+            <EmptyState
+              icon={CalendarClock}
+              title="No games on the board yet"
+              body='Tap "Odds" above to pull the latest lines from DraftKings.'
+            />
+          </div>
         )}
         {sortedGames.map((game) => (
           <GameCard key={game.id} game={game} />

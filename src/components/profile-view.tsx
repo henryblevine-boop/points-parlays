@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
+import { Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BetSlipCard } from "@/components/bet-slip-card";
 import { PinBetButton } from "@/components/pin-bet-button";
+import { EmptyState } from "@/components/empty-state";
 import { formatPoints } from "@/lib/odds";
 import type { Bet, Profile } from "@/lib/data";
 
@@ -66,9 +68,11 @@ export function ProfileView({
       <section className="space-y-2">
         <h2 className="font-display text-lg font-bold">Bet history</h2>
         {rest.length === 0 && (
-          <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-            No bets yet.
-          </p>
+          <EmptyState
+            icon={Ticket}
+            title="No bets yet"
+            body={isSelf ? "Head to Home and build your first slip." : undefined}
+          />
         )}
         {rest.map((bet) => (
           <BetSlipCard
