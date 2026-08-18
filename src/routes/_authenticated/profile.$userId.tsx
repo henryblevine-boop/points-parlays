@@ -8,12 +8,12 @@ import { profileQuery, betsQuery } from "@/lib/data";
 export const Route = createFileRoute("/_authenticated/profile/$userId")({
   head: () => ({
     meta: [
-      { title: "Member Profile — ParlayPals" },
+      { title: "Member Profile — Solis-Fantasy" },
       {
         name: "description",
-        content: "A ParlayPals member's betting record, points total and recent slips.",
+        content: "A Solis-Fantasy member's betting record, points total and recent slips.",
       },
-      { property: "og:title", content: "Member Profile — ParlayPals" },
+      { property: "og:title", content: "Member Profile — Solis-Fantasy" },
       {
         property: "og:description",
         content: "A member's betting record, points total and recent slips.",

@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ParlayPals — Free-to-Play Betting Leagues" },
+      { title: "Solis-Fantasy — Free-to-Play Betting Leagues" },
       {
         name: "description",
         content:
           "Free-to-play social betting leagues. Place simulated bets, earn points on American odds, and climb your league standings.",
       },
-      { property: "og:title", content: "ParlayPals — Free-to-Play Betting Leagues" },
+      { property: "og:title", content: "Solis-Fantasy — Free-to-Play Betting Leagues" },
       {
         property: "og:description",
         content:
