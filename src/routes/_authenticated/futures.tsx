@@ -11,7 +11,7 @@ import { useBetSlip } from "@/lib/bet-slip";
 export const Route = createFileRoute("/_authenticated/futures")({
   head: () => ({
     meta: [
-      { title: "Futures — ParlayPals" },
+      { title: "Futures — Solis-Fantasy" },
       {
         name: "description",
         content:

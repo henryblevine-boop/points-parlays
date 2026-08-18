@@ -18,16 +18,16 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign in — ParlayPals" },
+      { title: "Sign in — Solis-Fantasy" },
       {
         name: "description",
         content:
-          "Create your free ParlayPals account to join betting leagues, place simulated bets and climb the standings.",
+          "Create your free Solis-Fantasy account to join betting leagues, place simulated bets and climb the standings.",
       },
-      { property: "og:title", content: "Sign in — ParlayPals" },
+      { property: "og:title", content: "Sign in — Solis-Fantasy" },
       {
         property: "og:description",
-        content: "Create your free ParlayPals account and join a betting league.",
+        content: "Create your free Solis-Fantasy account and join a betting league.",
       },
     ],
   }),
@@ -140,9 +140,9 @@ function AuthPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 py-10">
       <Link to="/" className="mb-6 flex items-center gap-2">
-        <img src={logo} alt="ParlayPals logo" width={36} height={36} className="size-9" />
+        <img src={logo} alt="Solis-Fantasy logo" width={36} height={36} className="size-9" />
         <span className="font-display text-2xl font-extrabold">
-          Parlay<span className="text-primary">Pals</span>
+          Solis-<span className="text-primary">Fantasy</span>
         </span>
       </Link>
 

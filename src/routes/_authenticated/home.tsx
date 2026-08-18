@@ -17,13 +17,13 @@ const REFRESH_COOLDOWN_MS = 60_000;
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
     meta: [
-      { title: "Today's Slate — ParlayPals" },
+      { title: "Today's Slate — Solis-Fantasy" },
       {
         name: "description",
         content:
           "Browse this week's NFL games and player props, then build your free-to-play bet slip.",
       },
-      { property: "og:title", content: "Today's Slate — ParlayPals" },
+      { property: "og:title", content: "Today's Slate — Solis-Fantasy" },
       {
         property: "og:description",
         content: "Browse NFL games and player props and build your free-to-play bet slip.",

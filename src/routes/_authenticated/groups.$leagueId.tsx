@@ -13,13 +13,13 @@ import { formatPoints } from "@/lib/odds";
 export const Route = createFileRoute("/_authenticated/groups/$leagueId")({
   head: () => ({
     meta: [
-      { title: "League Standings — ParlayPals" },
+      { title: "League Standings — Solis-Fantasy" },
       {
         name: "description",
         content:
-          "Weekly standings, member records and recent bet slips for your ParlayPals league.",
+          "Weekly standings, member records and recent bet slips for your Solis-Fantasy league.",
       },
-      { property: "og:title", content: "League Standings — ParlayPals" },
+      { property: "og:title", content: "League Standings — Solis-Fantasy" },
       {
         property: "og:description",
         content: "Weekly standings, records and recent bet slips for your league.",

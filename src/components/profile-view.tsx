@@ -39,7 +39,7 @@ export function ProfileView({
             {profile?.username ?? (isSelf ? "You" : "Member")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {profile?.bio ?? (isSelf ? "Add a bio from your league profile." : "ParlayPals member")}
+            {profile?.bio ?? (isSelf ? "Add a bio from your league profile." : "Solis-Fantasy member")}
           </p>
         </div>
         {headerAction}

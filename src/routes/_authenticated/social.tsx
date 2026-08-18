@@ -35,12 +35,12 @@ import { useSessionUser } from "@/hooks/use-session-user";
 export const Route = createFileRoute("/_authenticated/social")({
   head: () => ({
     meta: [
-      { title: "Social Hub — ParlayPals" },
+      { title: "Social Hub — Solis-Fantasy" },
       {
         name: "description",
         content: "See what your leaguemates are betting, react to their slips and talk trash.",
       },
-      { property: "og:title", content: "Social Hub — ParlayPals" },
+      { property: "og:title", content: "Social Hub — Solis-Fantasy" },
       {
         property: "og:description",
         content: "See what your leaguemates are betting and react to their slips.",

@@ -23,13 +23,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/groups/")({
   head: () => ({
     meta: [
-      { title: "My Leagues — ParlayPals" },
+      { title: "My Leagues — Solis-Fantasy" },
       {
         name: "description",
         content:
-          "Create or join a private ParlayPals league, set weekly bet limits and track standings.",
+          "Create or join a private Solis-Fantasy league, set weekly bet limits and track standings.",
       },
-      { property: "og:title", content: "My Leagues — ParlayPals" },
+      { property: "og:title", content: "My Leagues — Solis-Fantasy" },
       {
         property: "og:description",
         content: "Create or join private leagues and track weekly standings.",

@@ -13,15 +13,15 @@ import { gamesQuery, trendingPropsQuery, searchProfilesQuery } from "@/lib/data"
 export const Route = createFileRoute("/_authenticated/search")({
   head: () => ({
     meta: [
-      { title: "Search Games, Props & Players — ParlayPals" },
+      { title: "Search Games, Props & Players — Solis-Fantasy" },
       {
         name: "description",
-        content: "Find games, player props and other ParlayPals members to follow and compete with.",
+        content: "Find games, player props and other Solis-Fantasy members to follow and compete with.",
       },
-      { property: "og:title", content: "Search — ParlayPals" },
+      { property: "og:title", content: "Search — Solis-Fantasy" },
       {
         property: "og:description",
-        content: "Find games, player props and other members across ParlayPals.",
+        content: "Find games, player props and other members across Solis-Fantasy.",
       },
     ],
   }),
@@ -106,7 +106,7 @@ function SearchPage() {
               <div className="min-w-0">
                 <p className="truncate font-display text-sm font-bold">{u.username}</p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {u.bio ?? "ParlayPals member"}
+                  {u.bio ?? "Solis-Fantasy member"}
                 </p>
               </div>
             </Link>

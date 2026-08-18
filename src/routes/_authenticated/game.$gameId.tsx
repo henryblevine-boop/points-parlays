@@ -8,12 +8,12 @@ import { gameQuery, propsQuery } from "@/lib/data";
 export const Route = createFileRoute("/_authenticated/game/$gameId")({
   head: () => ({
     meta: [
-      { title: "Game Markets — ParlayPals" },
+      { title: "Game Markets — Solis-Fantasy" },
       {
         name: "description",
         content: "All spreads, moneylines, totals and player props available for this matchup.",
       },
-      { property: "og:title", content: "Game Markets — ParlayPals" },
+      { property: "og:title", content: "Game Markets — Solis-Fantasy" },
       {
         property: "og:description",
         content: "All spreads, moneylines, totals and player props for this matchup.",

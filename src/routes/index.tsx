@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ParlayPals — Free-to-Play Sports Betting Leagues" },
+      { title: "Solis-Fantasy — Free-to-Play Sports Betting Leagues" },
       {
         name: "description",
         content:
           "Fantasy-style betting leagues with friends. Place simulated bets, score points on American odds, and win bragging rights. Free to play, 18+.",
       },
-      { property: "og:title", content: "ParlayPals — Free-to-Play Sports Betting Leagues" },
+      { property: "og:title", content: "Solis-Fantasy — Free-to-Play Sports Betting Leagues" },
       {
         property: "og:description",
         content:
@@ -65,9 +65,9 @@ function Landing() {
     <div className="min-h-screen overflow-x-hidden bg-background">
       <header className="mx-auto flex max-w-3xl items-center justify-between px-5 py-5">
         <div className="flex items-center gap-2">
-          <img src={logo} alt="ParlayPals logo" width={32} height={32} className="size-8" />
+          <img src={logo} alt="Solis-Fantasy logo" width={32} height={32} className="size-8" />
           <span className="font-display text-xl font-extrabold">
-            Parlay<span className="text-primary">Pals</span>
+            Solis-<span className="text-primary">Fantasy</span>
           </span>
         </div>
         <Button asChild size="sm" variant="ghost">
