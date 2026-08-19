@@ -16,11 +16,14 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedFuturesRouteImport } from './routes/_authenticated/futures'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSocialRouteImport } from './routes/_authenticated/social'
+import { Route as AuthenticatedStatsRouteImport } from './routes/_authenticated/stats'
 import { Route as AuthenticatedGameGameIdRouteImport } from './routes/_authenticated/game.$gameId'
 import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups.index'
 import { Route as AuthenticatedGroupsLeagueIdRouteImport } from './routes/_authenticated/groups.$leagueId'
+import { Route as AuthenticatedGroupsDiscoverRouteImport } from './routes/_authenticated/groups.discover'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileUserIdRouteImport } from './routes/_authenticated/profile.$userId'
 
@@ -58,6 +61,11 @@ const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -66,6 +74,11 @@ const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
 const AuthenticatedSocialRoute = AuthenticatedSocialRouteImport.update({
   id: '/social',
   path: '/social',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedStatsRoute = AuthenticatedStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedGameGameIdRoute = AuthenticatedGameGameIdRouteImport.update({
@@ -83,6 +96,12 @@ const AuthenticatedGroupsLeagueIdRoute =
   AuthenticatedGroupsLeagueIdRouteImport.update({
     id: '/groups/$leagueId',
     path: '/groups/$leagueId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGroupsDiscoverRoute =
+  AuthenticatedGroupsDiscoverRouteImport.update({
+    id: '/groups/discover',
+    path: '/groups/discover',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedProfileIndexRoute =
@@ -105,10 +124,13 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/groups/': typeof AuthenticatedGroupsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
@@ -120,10 +142,13 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/groups': typeof AuthenticatedGroupsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
@@ -137,10 +162,13 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/_authenticated/futures': typeof AuthenticatedFuturesRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/live': typeof AuthenticatedLiveRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/social': typeof AuthenticatedSocialRoute
+  '/_authenticated/stats': typeof AuthenticatedStatsRoute
   '/_authenticated/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/_authenticated/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/_authenticated/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/_authenticated/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
@@ -154,10 +182,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/futures'
     | '/home'
+    | '/live'
     | '/search'
     | '/social'
+    | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
+    | '/groups/discover'
     | '/profile/$userId'
     | '/groups/'
     | '/profile/'
@@ -169,10 +200,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/futures'
     | '/home'
+    | '/live'
     | '/search'
     | '/social'
+    | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
+    | '/groups/discover'
     | '/profile/$userId'
     | '/groups'
     | '/profile'
@@ -185,10 +219,13 @@ export interface FileRouteTypes {
     | '/terms'
     | '/_authenticated/futures'
     | '/_authenticated/home'
+    | '/_authenticated/live'
     | '/_authenticated/search'
     | '/_authenticated/social'
+    | '/_authenticated/stats'
     | '/_authenticated/game/$gameId'
     | '/_authenticated/groups/$leagueId'
+    | '/_authenticated/groups/discover'
     | '/_authenticated/profile/$userId'
     | '/_authenticated/groups/'
     | '/_authenticated/profile/'
@@ -253,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/live': {
+      id: '/_authenticated/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof AuthenticatedLiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/search': {
       id: '/_authenticated/search'
       path: '/search'
@@ -265,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/social'
       fullPath: '/social'
       preLoaderRoute: typeof AuthenticatedSocialRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/stats': {
+      id: '/_authenticated/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof AuthenticatedStatsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/game/$gameId': {
@@ -288,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGroupsLeagueIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/groups/discover': {
+      id: '/_authenticated/groups/discover'
+      path: '/groups/discover'
+      fullPath: '/groups/discover'
+      preLoaderRoute: typeof AuthenticatedGroupsDiscoverRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
       path: '/profile'
@@ -308,10 +366,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFuturesRoute: typeof AuthenticatedFuturesRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSocialRoute: typeof AuthenticatedSocialRoute
+  AuthenticatedStatsRoute: typeof AuthenticatedStatsRoute
   AuthenticatedGameGameIdRoute: typeof AuthenticatedGameGameIdRoute
   AuthenticatedGroupsLeagueIdRoute: typeof AuthenticatedGroupsLeagueIdRoute
+  AuthenticatedGroupsDiscoverRoute: typeof AuthenticatedGroupsDiscoverRoute
   AuthenticatedProfileUserIdRoute: typeof AuthenticatedProfileUserIdRoute
   AuthenticatedGroupsIndexRoute: typeof AuthenticatedGroupsIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
@@ -320,10 +381,13 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFuturesRoute: AuthenticatedFuturesRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedLiveRoute: AuthenticatedLiveRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSocialRoute: AuthenticatedSocialRoute,
+  AuthenticatedStatsRoute: AuthenticatedStatsRoute,
   AuthenticatedGameGameIdRoute: AuthenticatedGameGameIdRoute,
   AuthenticatedGroupsLeagueIdRoute: AuthenticatedGroupsLeagueIdRoute,
+  AuthenticatedGroupsDiscoverRoute: AuthenticatedGroupsDiscoverRoute,
   AuthenticatedProfileUserIdRoute: AuthenticatedProfileUserIdRoute,
   AuthenticatedGroupsIndexRoute: AuthenticatedGroupsIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,

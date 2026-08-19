@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { formatOdds } from "@/lib/odds";
 
 /**
- * DraftKings-style odds cell: the line (e.g. "+3.5", "O 44.5") sits on top in
+ * Sportsbook-style odds cell: the line (e.g. "+3.5", "O 44.5") sits on top in
  * white, with the price underneath in the accent green. Moneyline cells have no
  * line, so the price is centered on its own.
  */

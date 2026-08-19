@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Copy, Plus, Trophy } from "lucide-react";
+import { Copy, Globe2, Plus, Trophy } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -55,6 +55,8 @@ function GroupsPage() {
 
   const [name, setName] = useState("");
   const [limit, setLimit] = useState("5");
+  const [description, setDescription] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
   const [code, setCode] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
   const [joinOpen, setJoinOpen] = useState(false);
@@ -74,6 +76,8 @@ function GroupsPage() {
           invite_code: randomCode(),
           commissioner_id: user.id,
           weekly_bet_limit: weekly,
+          is_public: isPublic,
+          description: description.trim() || null,
         })
         .select("id")
         .single();
@@ -86,8 +90,10 @@ function GroupsPage() {
     onSuccess: () => {
       toast.success("League created");
       setName("");
+      setDescription("");
       setCreateOpen(false);
       queryClient.invalidateQueries({ queryKey: ["my-leagues"] });
+      queryClient.invalidateQueries({ queryKey: ["public-leagues"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -119,6 +125,19 @@ function GroupsPage() {
   return (
     <div className="space-y-4">
       <h1 className="font-display text-xl font-extrabold">My leagues</h1>
+
+      <Link
+        to="/groups/discover"
+        className="flex items-center gap-3 rounded-xl border border-primary/40 bg-primary/10 p-3 hover:border-primary"
+      >
+        <Globe2 className="size-5 text-primary" aria-hidden />
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-sm font-bold">Browse public leagues</p>
+          <p className="text-xs text-muted-foreground">
+            No friends signed up yet? Jump into an open league in one tap.
+          </p>
+        </div>
+      </Link>
 
       <div className="flex gap-2">
         <Dialog open={createOpen} onOpenChange={setCreateOpen}>
@@ -152,6 +171,30 @@ function GroupsPage() {
                   onChange={(e) => setLimit(e.target.value)}
                 />
               </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="league-desc">Description (optional)</Label>
+                <Input
+                  id="league-desc"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  maxLength={120}
+                  placeholder="Sunday NFL sweats, all welcome"
+                />
+              </div>
+              <label className="flex items-start gap-2 rounded-lg border border-border bg-elevated p-3">
+                <input
+                  type="checkbox"
+                  checked={isPublic}
+                  onChange={(e) => setIsPublic(e.target.checked)}
+                  className="mt-0.5 size-4 accent-primary"
+                />
+                <span className="text-xs">
+                  <span className="block font-semibold text-foreground">Make this league public</span>
+                  <span className="text-muted-foreground">
+                    Anyone can find it under Public leagues and join without a code.
+                  </span>
+                </span>
+              </label>
             </div>
             <DialogFooter>
               <Button onClick={() => create.mutate()} disabled={create.isPending}>

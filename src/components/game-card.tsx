@@ -15,7 +15,7 @@ function timeLabel(iso: string) {
 }
 
 /**
- * DraftKings-style game row: teams stacked on the left, three market columns
+ * Sportsbook-style game row: teams stacked on the left, three market columns
  * (Spread / Total / Moneyline) on the right with one cell per team.
  */
 export function GameCard({ game }: { game: Game }) {
