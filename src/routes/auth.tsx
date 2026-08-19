@@ -119,6 +119,8 @@ function AuthPage() {
       await supabase
         .from("profiles")
         .upsert({ id: session.user.id, username: parsed.data.username }, { onConflict: "id" });
+      // Fire-and-forget welcome email — never block the redirect on it.
+      void sendWelcome().catch(() => {});
     }
 
     setLoading(false);

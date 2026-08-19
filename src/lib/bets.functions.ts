@@ -109,5 +109,12 @@ export const settleBet = createServerFn({ method: "POST" })
       .eq("id", bet.id);
     if (uErr) throw new Error(uErr.message);
 
+    try {
+      const { sendBetResultEmail } = await import("./notifications.server");
+      await sendBetResultEmail(bet.id);
+    } catch (mailErr) {
+      console.error("bet result email failed", mailErr);
+    }
+
     return { pointsDelta: delta };
   });
