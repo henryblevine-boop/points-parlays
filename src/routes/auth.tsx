@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -12,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { sendWelcomeEmail } from "@/lib/notifications.functions";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: z.object({
@@ -48,6 +50,7 @@ const signUpSchema = z.object({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const sendWelcome = useServerFn(sendWelcomeEmail);
   const { tab } = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -119,6 +122,8 @@ function AuthPage() {
       await supabase
         .from("profiles")
         .upsert({ id: session.user.id, username: parsed.data.username }, { onConflict: "id" });
+      // Fire-and-forget welcome email — never block the redirect on it.
+      void sendWelcome().catch(() => {});
     }
 
     setLoading(false);
