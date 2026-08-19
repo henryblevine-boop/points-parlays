@@ -6,6 +6,7 @@ import { Home, Search, MessagesSquare, Users, User } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { BetSlipProvider } from "@/lib/bet-slip";
 import { BetSlipDrawer } from "@/components/bet-slip-drawer";
+import { SiteFooter } from "@/components/site-footer";
 import { useSessionUser } from "@/hooks/use-session-user";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -65,10 +66,9 @@ export function AppShell() {
 
         <main className="mx-auto max-w-2xl px-4 py-4">
           <Outlet />
-          <p className="pt-8 text-center text-[11px] text-muted-foreground">
-            Free to play. No real money wagering. Must be 18+.
-          </p>
         </main>
+
+        <SiteFooter />
 
         {user && <BetSlipDrawer userId={user.id} />}
 

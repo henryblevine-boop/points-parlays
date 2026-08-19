@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Trophy, ListChecks, Users, TrendingUp, Flame, Shield } from "lucide-react";
 
 import logo from "@/assets/logo.png";
+import { SiteFooter } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -160,10 +161,9 @@ function Landing() {
           </Button>
         </section>
 
-        <p className="mt-10 text-center text-[11px] text-muted-foreground">
-          Free to play. No real money wagering. Must be 18+.
-        </p>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

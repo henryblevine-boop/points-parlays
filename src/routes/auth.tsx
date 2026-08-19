@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import logo from "@/assets/logo.png";
+import { SiteFooter } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -239,9 +240,7 @@ function AuthPage() {
         </Button>
       </div>
 
-      <p className="mt-6 max-w-sm text-center text-[11px] text-muted-foreground">
-        Free to play. No real money wagering. Must be 18+.
-      </p>
+      <SiteFooter />
     </div>
   );
 }
