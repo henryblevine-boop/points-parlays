@@ -23,6 +23,7 @@ import { Route as AuthenticatedStatsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedGameGameIdRouteImport } from './routes/_authenticated/game.$gameId'
 import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups.index'
 import { Route as AuthenticatedGroupsLeagueIdRouteImport } from './routes/_authenticated/groups.$leagueId'
+import { Route as AuthenticatedGroupsDiscoverRouteImport } from './routes/_authenticated/groups.discover'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileUserIdRouteImport } from './routes/_authenticated/profile.$userId'
 
@@ -97,6 +98,12 @@ const AuthenticatedGroupsLeagueIdRoute =
     path: '/groups/$leagueId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedGroupsDiscoverRoute =
+  AuthenticatedGroupsDiscoverRouteImport.update({
+    id: '/groups/discover',
+    path: '/groups/discover',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProfileIndexRoute =
   AuthenticatedProfileIndexRouteImport.update({
     id: '/profile/',
@@ -123,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/groups/': typeof AuthenticatedGroupsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
@@ -140,6 +148,7 @@ export interface FileRoutesByTo {
   '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/groups': typeof AuthenticatedGroupsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
@@ -159,6 +168,7 @@ export interface FileRoutesById {
   '/_authenticated/stats': typeof AuthenticatedStatsRoute
   '/_authenticated/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/_authenticated/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
+  '/_authenticated/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/_authenticated/profile/$userId': typeof AuthenticatedProfileUserIdRoute
   '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
@@ -178,6 +188,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
+    | '/groups/discover'
     | '/profile/$userId'
     | '/groups/'
     | '/profile/'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
+    | '/groups/discover'
     | '/profile/$userId'
     | '/groups'
     | '/profile'
@@ -213,6 +225,7 @@ export interface FileRouteTypes {
     | '/_authenticated/stats'
     | '/_authenticated/game/$gameId'
     | '/_authenticated/groups/$leagueId'
+    | '/_authenticated/groups/discover'
     | '/_authenticated/profile/$userId'
     | '/_authenticated/groups/'
     | '/_authenticated/profile/'
@@ -326,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGroupsLeagueIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/groups/discover': {
+      id: '/_authenticated/groups/discover'
+      path: '/groups/discover'
+      fullPath: '/groups/discover'
+      preLoaderRoute: typeof AuthenticatedGroupsDiscoverRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
       path: '/profile'
@@ -352,6 +372,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedStatsRoute: typeof AuthenticatedStatsRoute
   AuthenticatedGameGameIdRoute: typeof AuthenticatedGameGameIdRoute
   AuthenticatedGroupsLeagueIdRoute: typeof AuthenticatedGroupsLeagueIdRoute
+  AuthenticatedGroupsDiscoverRoute: typeof AuthenticatedGroupsDiscoverRoute
   AuthenticatedProfileUserIdRoute: typeof AuthenticatedProfileUserIdRoute
   AuthenticatedGroupsIndexRoute: typeof AuthenticatedGroupsIndexRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
@@ -366,6 +387,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedStatsRoute: AuthenticatedStatsRoute,
   AuthenticatedGameGameIdRoute: AuthenticatedGameGameIdRoute,
   AuthenticatedGroupsLeagueIdRoute: AuthenticatedGroupsLeagueIdRoute,
+  AuthenticatedGroupsDiscoverRoute: AuthenticatedGroupsDiscoverRoute,
   AuthenticatedProfileUserIdRoute: AuthenticatedProfileUserIdRoute,
   AuthenticatedGroupsIndexRoute: AuthenticatedGroupsIndexRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
