@@ -64,7 +64,7 @@ function LivePage() {
 
   const pending = bets.filter((b) => b.status === "pending");
   const gameIds = Array.from(
-    new Set(pending.flatMap((b) => b.bet_legs.map((l) => (l as { game_id?: string }).game_id ?? ""))),
+    new Set(pending.flatMap((b) => b.bet_legs.map((l) => l.game_id ?? ""))),
   ).filter(Boolean);
   const { data: games = [] } = useQuery(gamesByIdsQuery(gameIds));
   const gameById = new Map(games.map((g) => [g.id, g]));
