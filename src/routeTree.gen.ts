@@ -19,6 +19,7 @@ import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/h
 import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSocialRouteImport } from './routes/_authenticated/social'
+import { Route as AuthenticatedStatsRouteImport } from './routes/_authenticated/stats'
 import { Route as AuthenticatedGameGameIdRouteImport } from './routes/_authenticated/game.$gameId'
 import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups.index'
 import { Route as AuthenticatedGroupsLeagueIdRouteImport } from './routes/_authenticated/groups.$leagueId'
@@ -74,6 +75,11 @@ const AuthenticatedSocialRoute = AuthenticatedSocialRouteImport.update({
   path: '/social',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStatsRoute = AuthenticatedStatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedGameGameIdRoute = AuthenticatedGameGameIdRouteImport.update({
   id: '/game/$gameId',
   path: '/game/$gameId',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
+  '/stats': typeof AuthenticatedStatsRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/_authenticated/live': typeof AuthenticatedLiveRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/social': typeof AuthenticatedSocialRoute
+  '/_authenticated/stats': typeof AuthenticatedStatsRoute
   '/_authenticated/game/$gameId': typeof AuthenticatedGameGameIdRoute
   '/_authenticated/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/_authenticated/profile/$userId': typeof AuthenticatedProfileUserIdRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/search'
     | '/social'
+    | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
     | '/profile/$userId'
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/live'
     | '/search'
     | '/social'
+    | '/stats'
     | '/game/$gameId'
     | '/groups/$leagueId'
     | '/profile/$userId'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/_authenticated/live'
     | '/_authenticated/search'
     | '/_authenticated/social'
+    | '/_authenticated/stats'
     | '/_authenticated/game/$gameId'
     | '/_authenticated/groups/$leagueId'
     | '/_authenticated/profile/$userId'
@@ -286,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSocialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/stats': {
+      id: '/_authenticated/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof AuthenticatedStatsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/game/$gameId': {
       id: '/_authenticated/game/$gameId'
       path: '/game/$gameId'
@@ -330,6 +349,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSocialRoute: typeof AuthenticatedSocialRoute
+  AuthenticatedStatsRoute: typeof AuthenticatedStatsRoute
   AuthenticatedGameGameIdRoute: typeof AuthenticatedGameGameIdRoute
   AuthenticatedGroupsLeagueIdRoute: typeof AuthenticatedGroupsLeagueIdRoute
   AuthenticatedProfileUserIdRoute: typeof AuthenticatedProfileUserIdRoute
@@ -343,6 +363,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLiveRoute: AuthenticatedLiveRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSocialRoute: AuthenticatedSocialRoute,
+  AuthenticatedStatsRoute: AuthenticatedStatsRoute,
   AuthenticatedGameGameIdRoute: AuthenticatedGameGameIdRoute,
   AuthenticatedGroupsLeagueIdRoute: AuthenticatedGroupsLeagueIdRoute,
   AuthenticatedProfileUserIdRoute: AuthenticatedProfileUserIdRoute,
