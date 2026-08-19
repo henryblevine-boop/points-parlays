@@ -3,7 +3,7 @@ import { Mail } from "lucide-react";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-card/50 py-8">
+    <footer className="w-full border-t border-border bg-card/50 py-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-4 px-5 sm:flex-row">
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground sm:justify-start">
           <Link
