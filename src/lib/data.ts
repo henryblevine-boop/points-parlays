@@ -74,6 +74,8 @@ export type League = {
   commissioner_id: string;
   weekly_bet_limit: number;
   created_at: string;
+  is_public?: boolean;
+  description?: string | null;
 };
 
 export const gamesQuery = (leagueLabel?: string) => ({
@@ -368,5 +370,47 @@ export const futuresQuery = () => ({
       .order("odds", { ascending: true });
     if (error) throw error;
     return (data ?? []) as FuturesMarket[];
+  },
+});
+
+export type PublicLeague = League & { memberCount: number };
+
+/** Open leagues anyone can join — the landing spot for solo users. */
+export const publicLeaguesQuery = () => ({
+  queryKey: ["public-leagues"],
+  queryFn: async (): Promise<PublicLeague[]> => {
+    const { data, error } = await untyped(supabase)
+      .from("leagues")
+      .select("*")
+      .eq("is_public", true)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    const leagues = (data ?? []) as League[];
+    if (leagues.length === 0) return [];
+    const { data: members, error: mErr } = await supabase
+      .from("league_members")
+      .select("league_id")
+      .in(
+        "league_id",
+        leagues.map((l) => l.id),
+      );
+    if (mErr) throw mErr;
+    const counts = new Map<string, number>();
+    for (const m of members ?? []) counts.set(m.league_id, (counts.get(m.league_id) ?? 0) + 1);
+    return leagues.map((l) => ({ ...l, memberCount: counts.get(l.id) ?? 0 }));
+  },
+});
+
+/** Games referenced by the legs of live (pending) bets, for sweat tracking. */
+export const gamesByIdsQuery = (ids: string[]) => ({
+  queryKey: ["games-by-ids", [...ids].sort().join(",")],
+  enabled: ids.length > 0,
+  refetchInterval: 60_000,
+  queryFn: async (): Promise<Game[]> => {
+    if (ids.length === 0) return [];
+    const { data, error } = await supabase.from("games").select("*").in("id", ids);
+    if (error) throw error;
+    return (data ?? []) as unknown as Game[];
   },
 });
