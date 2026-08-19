@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { RefreshCw, Trophy, CalendarClock } from "lucide-react";
+import { RefreshCw, Trophy, CalendarClock, Radio } from "lucide-react";
 import { toast } from "sonner";
 
 import { GameCard } from "@/components/game-card";
@@ -85,6 +85,13 @@ function HomePage() {
       </div>
 
       <div className="px-4">
+        <Link
+          to="/live"
+          className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/50"
+        >
+          <Radio className="size-4 text-primary" aria-hidden />
+          Live tracker — sweat your open tickets
+        </Link>
         <Link
           to="/futures"
           className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground hover:border-primary/50"
