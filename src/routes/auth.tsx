@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { sendWelcomeEmail } from "@/lib/notifications.functions";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: z.object({
