@@ -323,24 +323,30 @@ export type Database = {
         Row: {
           commissioner_id: string
           created_at: string
+          description: string | null
           id: string
           invite_code: string
+          is_public: boolean
           name: string
           weekly_bet_limit: number
         }
         Insert: {
           commissioner_id: string
           created_at?: string
+          description?: string | null
           id?: string
           invite_code: string
+          is_public?: boolean
           name: string
           weekly_bet_limit?: number
         }
         Update: {
           commissioner_id?: string
           created_at?: string
+          description?: string | null
           id?: string
           invite_code?: string
+          is_public?: boolean
           name?: string
           weekly_bet_limit?: number
         }
