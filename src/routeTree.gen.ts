@@ -26,6 +26,7 @@ import { Route as AuthenticatedGroupsLeagueIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedGroupsDiscoverRouteImport } from './routes/_authenticated/groups.discover'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile.index'
 import { Route as AuthenticatedProfileUserIdRouteImport } from './routes/_authenticated/profile.$userId'
+import { Route as ApiPublicWeeklyRecapRouteImport } from './routes/api/public/weekly-recap'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -119,6 +120,11 @@ const AuthenticatedProfileUserIdRoute =
     path: '/profile/$userId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicWeeklyRecapRoute = ApiPublicWeeklyRecapRouteImport.update({
+  id: '/api/public/weekly-recap',
+  path: '/api/public/weekly-recap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
   path: '/lovable/email/auth/preview',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
+  '/api/public/weekly-recap': typeof ApiPublicWeeklyRecapRoute
   '/groups/': typeof AuthenticatedGroupsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/profile/$userId': typeof AuthenticatedProfileUserIdRoute
+  '/api/public/weekly-recap': typeof ApiPublicWeeklyRecapRoute
   '/groups': typeof AuthenticatedGroupsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/_authenticated/groups/$leagueId': typeof AuthenticatedGroupsLeagueIdRoute
   '/_authenticated/groups/discover': typeof AuthenticatedGroupsDiscoverRoute
   '/_authenticated/profile/$userId': typeof AuthenticatedProfileUserIdRoute
+  '/api/public/weekly-recap': typeof ApiPublicWeeklyRecapRoute
   '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/groups/$leagueId'
     | '/groups/discover'
     | '/profile/$userId'
+    | '/api/public/weekly-recap'
     | '/groups/'
     | '/profile/'
     | '/lovable/email/auth/preview'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/groups/$leagueId'
     | '/groups/discover'
     | '/profile/$userId'
+    | '/api/public/weekly-recap'
     | '/groups'
     | '/profile'
     | '/lovable/email/auth/preview'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/_authenticated/groups/$leagueId'
     | '/_authenticated/groups/discover'
     | '/_authenticated/profile/$userId'
+    | '/api/public/weekly-recap'
     | '/_authenticated/groups/'
     | '/_authenticated/profile/'
     | '/lovable/email/auth/preview'
@@ -274,6 +286,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
+  ApiPublicWeeklyRecapRoute: typeof ApiPublicWeeklyRecapRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -400,6 +413,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileUserIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/weekly-recap': {
+      id: '/api/public/weekly-recap'
+      path: '/api/public/weekly-recap'
+      fullPath: '/api/public/weekly-recap'
+      preLoaderRoute: typeof ApiPublicWeeklyRecapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
       path: '/lovable/email/auth/preview'
@@ -463,6 +483,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
+  ApiPublicWeeklyRecapRoute: ApiPublicWeeklyRecapRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
