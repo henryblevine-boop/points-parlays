@@ -45,6 +45,7 @@ export type Profile = {
 export type BetLeg = {
   id: string;
   bet_id: string;
+  game_id: string | null;
   market: string;
   selection: string;
   line: string | null;

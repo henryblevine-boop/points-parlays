@@ -109,7 +109,7 @@ function LivePage() {
 }
 
 function LiveTicket({ bet, gameById }: { bet: Bet; gameById: Map<string, Game> }) {
-  const states = bet.bet_legs.map((leg) => legState(gameById.get((leg as { game_id?: string }).game_id ?? "")));
+  const states = bet.bet_legs.map((leg) => legState(gameById.get(leg.game_id ?? "")));
   const liveCount = states.filter((s) => s === "live").length;
   const finalCount = states.filter((s) => s === "final").length;
 
@@ -134,7 +134,7 @@ function LiveTicket({ bet, gameById }: { bet: Bet; gameById: Map<string, Game> }
       </div>
       <ul className="divide-y divide-border">
         {bet.bet_legs.map((leg, i) => {
-          const game = gameById.get((leg as { game_id?: string }).game_id ?? "");
+          const game = gameById.get(leg.game_id ?? "");
           const state = states[i]!;
           return (
             <li key={leg.id} className="flex items-center gap-2 px-3 py-2.5">

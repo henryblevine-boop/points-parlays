@@ -16,6 +16,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedFuturesRouteImport } from './routes/_authenticated/futures'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedLiveRouteImport } from './routes/_authenticated/live'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSocialRouteImport } from './routes/_authenticated/social'
 import { Route as AuthenticatedGameGameIdRouteImport } from './routes/_authenticated/game.$gameId'
@@ -56,6 +57,11 @@ const AuthenticatedFuturesRoute = AuthenticatedFuturesRouteImport.update({
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLiveRoute = AuthenticatedLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
@@ -105,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/futures': typeof AuthenticatedFuturesRoute
   '/home': typeof AuthenticatedHomeRoute
+  '/live': typeof AuthenticatedLiveRoute
   '/search': typeof AuthenticatedSearchRoute
   '/social': typeof AuthenticatedSocialRoute
   '/game/$gameId': typeof AuthenticatedGameGameIdRoute
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/_authenticated/futures': typeof AuthenticatedFuturesRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
+  '/_authenticated/live': typeof AuthenticatedLiveRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/social': typeof AuthenticatedSocialRoute
   '/_authenticated/game/$gameId': typeof AuthenticatedGameGameIdRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/futures'
     | '/home'
+    | '/live'
     | '/search'
     | '/social'
     | '/game/$gameId'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/futures'
     | '/home'
+    | '/live'
     | '/search'
     | '/social'
     | '/game/$gameId'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/_authenticated/futures'
     | '/_authenticated/home'
+    | '/_authenticated/live'
     | '/_authenticated/search'
     | '/_authenticated/social'
     | '/_authenticated/game/$gameId'
@@ -253,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/live': {
+      id: '/_authenticated/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof AuthenticatedLiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/search': {
       id: '/_authenticated/search'
       path: '/search'
@@ -308,6 +327,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFuturesRoute: typeof AuthenticatedFuturesRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
+  AuthenticatedLiveRoute: typeof AuthenticatedLiveRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSocialRoute: typeof AuthenticatedSocialRoute
   AuthenticatedGameGameIdRoute: typeof AuthenticatedGameGameIdRoute
@@ -320,6 +340,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFuturesRoute: AuthenticatedFuturesRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
+  AuthenticatedLiveRoute: AuthenticatedLiveRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSocialRoute: AuthenticatedSocialRoute,
   AuthenticatedGameGameIdRoute: AuthenticatedGameGameIdRoute,
