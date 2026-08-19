@@ -29,7 +29,7 @@ const features = [
   {
     icon: ListChecks,
     title: "Build real parlays",
-    body: "Live NFL spreads, moneylines, totals and 15 player prop markets, straight off DraftKings' board.",
+    body: "Full NFL boards — spreads, moneylines, totals and 15 player prop markets, refreshed all week.",
   },
   {
     icon: Trophy,
@@ -108,7 +108,7 @@ function Landing() {
                 <Shield className="size-3.5 text-primary" aria-hidden /> No deposits, ever
               </span>
               <span className="flex items-center gap-1.5">
-                <TrendingUp className="size-3.5 text-primary" aria-hidden /> Real DraftKings odds
+                <TrendingUp className="size-3.5 text-primary" aria-hidden /> Real market odds
               </span>
             </div>
           </div>

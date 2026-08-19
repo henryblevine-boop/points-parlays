@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
-import { Ticket } from "lucide-react";
+import { BarChart3, Radio, Ticket } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BetSlipCard } from "@/components/bet-slip-card";
 import { PinBetButton } from "@/components/pin-bet-button";
+import { ShareBetButton } from "@/components/share-bet-button";
+import { Link } from "@tanstack/react-router";
 import { EmptyState } from "@/components/empty-state";
 import { formatPoints } from "@/lib/odds";
 import type { Bet, Profile } from "@/lib/data";
@@ -51,15 +53,33 @@ export function ProfileView({
         <Stat label="Win rate" value={`${winRate}%`} />
       </dl>
 
+      {isSelf && (
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            to="/stats"
+            className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 text-sm font-semibold hover:border-primary/60"
+          >
+            <BarChart3 className="size-4 text-primary" aria-hidden /> Season stats
+          </Link>
+          <Link
+            to="/live"
+            className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2.5 text-sm font-semibold hover:border-primary/60"
+          >
+            <Radio className="size-4 text-primary" aria-hidden /> Live tracker
+          </Link>
+        </div>
+      )}
+
       {pinned && (
         <section className="space-y-2">
           <h2 className="font-display text-lg font-bold">Featured pick</h2>
           <BetSlipCard
             bet={pinned}
             action={
-              isSelf ? (
-                <PinBetButton userId={pinned.user_id} betId={pinned.id} isPinned />
-              ) : undefined
+              <span className="flex items-center gap-2">
+                <ShareBetButton bet={pinned} username={profile?.username ?? "solis"} />
+                {isSelf && <PinBetButton userId={pinned.user_id} betId={pinned.id} isPinned />}
+              </span>
             }
           />
         </section>
@@ -79,9 +99,10 @@ export function ProfileView({
             key={bet.id}
             bet={bet}
             action={
-              isSelf ? (
-                <PinBetButton userId={bet.user_id} betId={bet.id} isPinned={false} />
-              ) : undefined
+              <span className="flex items-center gap-2">
+                <ShareBetButton bet={bet} username={profile?.username ?? "solis"} />
+                {isSelf && <PinBetButton userId={bet.user_id} betId={bet.id} isPinned={false} />}
+              </span>
             }
           />
         ))}

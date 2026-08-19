@@ -48,7 +48,7 @@ function HomePage() {
       queryClient.invalidateQueries({ queryKey: ["trending-props"] });
       toast.success(
         `Odds updated — ${result.gamesUpserted} games, ${result.propsUpserted} props, ` +
-          `${result.futuresUpserted} futures synced from DraftKings.`,
+          `${result.futuresUpserted} futures synced.`,
       );
       if (result.errors.length > 0) console.warn("[odds refresh]", result.errors);
     },
@@ -77,7 +77,7 @@ function HomePage() {
           onClick={() => refresh.mutate()}
           disabled={refresh.isPending || onCooldown}
           className="flex shrink-0 items-center gap-1.5 text-xs font-semibold text-muted-foreground disabled:opacity-50"
-          aria-label="Refresh odds from DraftKings"
+          aria-label="Refresh the latest odds"
         >
           <RefreshCw className={cn("size-3.5", refresh.isPending && "animate-spin")} />
           Odds
@@ -117,7 +117,7 @@ function HomePage() {
             <EmptyState
               icon={CalendarClock}
               title="No games on the board yet"
-              body='Tap "Odds" above to pull the latest lines from DraftKings.'
+              body='Tap "Odds" above to pull the latest lines.'
             />
           </div>
         )}
