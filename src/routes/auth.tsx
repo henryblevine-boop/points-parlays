@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -48,6 +49,7 @@ const signUpSchema = z.object({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const sendWelcome = useServerFn(sendWelcomeEmail);
   const { tab } = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
