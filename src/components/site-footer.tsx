@@ -21,11 +21,11 @@ export function SiteFooter() {
         </div>
 
         <a
-          href="mailto:support@solis-fantasy.com"
+          href="mailto:support@solisfantasy.com"
           className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
         >
           <Mail className="size-4" aria-hidden />
-          support@solis-fantasy.com
+          support@solisfantasy.com
         </a>
       </div>
 
