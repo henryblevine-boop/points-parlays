@@ -88,7 +88,7 @@ function Landing() {
               NFL is live · 100% free to play
             </p>
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] sm:text-5xl">
-              who knows ball?
+              WHO KNOWS BALL?
             </h1>
             <p className="mt-4 max-w-md text-muted-foreground">
               Place simulated bets on tonight's slate, score points off real American odds, and
